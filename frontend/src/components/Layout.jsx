@@ -134,12 +134,16 @@ function UserMenu() {
 function TopBar({ title }) {
   return (
     // Sticky, and painted with the same fixed background as the page so the glow runs through it.
-    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 [background:var(--app-glow)_fixed,var(--background)] md:gap-4 md:px-6">
-      <h1 className="min-w-0 truncate text-2xl leading-[1.2] font-semibold">{title}</h1>
-      <div className="ml-auto flex items-center gap-2 md:shrink-0 md:gap-4">
-        <ReplayStatus />
-        <AlertCounts />
-        <UserMenu />
+    // The bar spans the full width; its contents use the page's 1280px column so the
+    // title and user menu line up with the content edges below.
+    <header className="sticky top-0 z-20 h-14 shrink-0 border-b border-border [background:var(--app-glow)_fixed,var(--background)]">
+      <div className="mx-auto flex h-full w-full max-w-[1280px] items-center gap-2 px-4 md:gap-4 md:px-8">
+        <h1 className="min-w-0 truncate text-2xl leading-[1.2] font-semibold">{title}</h1>
+        <div className="ml-auto flex items-center gap-2 md:shrink-0 md:gap-4">
+          <ReplayStatus />
+          <AlertCounts />
+          <UserMenu />
+        </div>
       </div>
     </header>
   );
