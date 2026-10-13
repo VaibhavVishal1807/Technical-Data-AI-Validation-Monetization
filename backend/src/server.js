@@ -41,7 +41,7 @@ function start() {
     // Outside production, point whoever started the server to the built-in accounts.
     // Only usernames are printed; the passwords are in README.md ("Sign-in accounts").
     if (process.env.NODE_ENV !== 'production') {
-      console.log(`[auth] built-in accounts: ${USERS.map((u) => `${u.username} (${u.role})`).join(', ')}; passwords in README.md, "Sign-in accounts"`);
+      console.log(`[auth] built-in accounts: ${USERS.map((u) => `${u.username} (${u.role})`).join(', ')}; choose one under "Sign in as" on the login page`);
     }
   });
 

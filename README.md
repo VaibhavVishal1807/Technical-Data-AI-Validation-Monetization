@@ -33,7 +33,7 @@ npm run install:all
 npm run dev
 ```
 
-Then open **http://localhost:5173** and sign in with one of the accounts below.
+Then open **http://localhost:5173**, choose a role under **Sign in as** (it fills in that role's account) and press **Sign in**.
 
 - `npm run install:all` installs the root tool (`concurrently`), the backend and the frontend.
 - `npm run dev` starts the API on port 4000 and the React app on port 5173 together. Press Ctrl+C to stop both.
@@ -48,10 +48,10 @@ Then open **http://localhost:5173** and sign in with one of the accounts below.
 | `analyst` | `analyst123` | analyst | Overview, Live Alerts, Reports, Orphaned, Costs, Data Quality (read-only) |
 | `viewer` | `viewer123` | viewer | Overview (no cost figures), Live Alerts, Data Quality |
 
-The login page does not list these accounts; they are documented here, and in development the API
-prints the usernames when it starts. Passwords are stored only as bcrypt hashes (`backend/src/users.js`).
-Built-in accounts suit an evaluation; production would sign people in through the company's identity
-provider (SSO).
+The **Sign in as** picker on the login page fills in these accounts; you can also type them. In
+development the API also prints the usernames when it starts. Passwords are stored only as bcrypt hashes
+on the server (`backend/src/users.js`). Built-in accounts suit an evaluation; production would sign people
+in through the company's identity provider (SSO) and hide the picker (`VITE_SHOW_ROLE_PICKER=false`).
 
 ### Things to try
 1. Sign in as **admin**. Alerts start streaming at once (the telemetry replay plays the CSV as live data); CRITICAL ones pop up.
@@ -197,6 +197,7 @@ Optional. Copy `backend/.env.example` to `backend/.env` to change anything:
 | `ALERT_COOLDOWN_SNAPSHOTS` | 3 | Quiet period per report and alert type |
 | `REPLAY_INTERVAL_MS` | 500 | Speed of the telemetry replay |
 | `REPLAY_LOOP` / `REPLAY_AUTOSTART` | true / true | Replay behaviour |
+| `VITE_SHOW_ROLE_PICKER` | true | Frontend, read at build time: `false` hides the "Sign in as" picker (e.g. `VITE_SHOW_ROLE_PICKER=false npm run build`) |
 
 Full list in [docs/API_SPEC.md §5](docs/API_SPEC.md#5-configuration). `.env` is git-ignored; no secrets are committed.
 

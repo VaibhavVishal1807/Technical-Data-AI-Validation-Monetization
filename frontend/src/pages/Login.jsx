@@ -1,8 +1,8 @@
 /**
  * Login page: animated fibres behind a gently tilting card (both switch off
- * when the OS asks for reduced motion). A plain username/password form with a
- * show-password toggle and a Caps Lock warning. Accounts are not listed here;
- * they are documented in the README.
+ * when the OS asks for reduced motion). A username/password form with a
+ * show-password toggle and a Caps Lock warning, plus a "Sign in as" role
+ * picker that fills in one of the built-in accounts (listed in the README).
  */
 import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -13,6 +13,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import GhostFibers from '../components/GhostFibers';
 import { useAuth } from '../auth';
+import { cn } from '@/lib/utils';
+
+// The built-in accounts, one per role (same as README "Sign-in accounts").
+// A deployment that signs people in with real accounts hides the picker by
+// building the frontend with VITE_SHOW_ROLE_PICKER=false.
+const ROLE_ACCOUNTS = [
+  { label: 'Admin', username: 'admin', password: 'admin123', access: 'Full access, including costs, replay control and users' },
+  { label: 'Analyst', username: 'analyst', password: 'analyst123', access: 'Health, reports, orphaned reports, costs and data quality (read-only)' },
+  { label: 'Viewer', username: 'viewer', password: 'viewer123', access: 'Health (without costs), live alerts and data quality' },
+];
+const SHOW_ROLE_PICKER = import.meta.env.VITE_SHOW_ROLE_PICKER !== 'false';
 
 export default function Login() {
   const { user, login, notice } = useAuth();
@@ -44,6 +55,14 @@ export default function Login() {
   // getModifierState tells whether Caps Lock is on at the moment of the key event.
   const checkCapsLock = (event) => setCapsLock(Boolean(event.getModifierState?.('CapsLock')));
 
+  // The selected role follows the fields: typing other credentials clears it.
+  const selectedRole = ROLE_ACCOUNTS.find((r) => r.username === username && r.password === password);
+  const chooseRole = (role) => {
+    setUsername(role.username);
+    setPassword(role.password);
+    setError(null);
+  };
+
   return (
     <div className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 py-8">
       {/* Background only: fixed behind the card, never receives clicks. */}
@@ -68,6 +87,34 @@ export default function Login() {
           )}
 
           <form onSubmit={submit} className="grid gap-4">
+            {SHOW_ROLE_PICKER && (
+              <div className="grid gap-2">
+                <span id="role-picker-label" className="text-sm font-medium">Sign in as</span>
+                <div role="radiogroup" aria-labelledby="role-picker-label" className="grid grid-cols-3 gap-1 rounded-lg border border-border bg-background p-1">
+                  {ROLE_ACCOUNTS.map((role) => {
+                    const active = selectedRole?.username === role.username;
+                    return (
+                      <button
+                        key={role.username}
+                        type="button"
+                        role="radio"
+                        aria-checked={active}
+                        onClick={() => chooseRole(role)}
+                        className={cn(
+                          'h-8 rounded-md text-sm font-medium transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
+                          active ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground',
+                        )}
+                      >
+                        {role.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-muted-foreground" aria-live="polite">
+                  {selectedRole ? selectedRole.access : 'Choose a role to fill in its account, or enter your own credentials.'}
+                </p>
+              </div>
+            )}
             <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
               <Input
