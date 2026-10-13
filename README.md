@@ -27,8 +27,8 @@ cost. This project rebuilds that view:
 **Prerequisites:** [Node.js](https://nodejs.org) **20.19 or newer** (22 LTS recommended) and Git.
 
 ```bash
-git clone https://github.com/VaibhavVishal1807/pure-insights-command-center.git
-cd pure-insights-command-center
+git clone https://github.com/VaibhavVishal1807/Technical-Data-AI-Validation-Monetization.git
+cd Technical-Data-AI-Validation-Monetization
 npm run install:all
 npm run dev
 ```
