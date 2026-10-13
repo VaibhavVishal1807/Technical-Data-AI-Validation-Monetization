@@ -1,10 +1,10 @@
 /**
  * users.js
- * Hard-coded demo users. Fine for a case study; a real deployment would use
- * the company identity provider (SSO / OAuth) instead.
+ * The built-in accounts, one per role. A real deployment would use the
+ * company identity provider (SSO / OAuth) instead.
  *
- * Only bcrypt HASHES are stored, never the passwords themselves. The demo
- * passwords are listed in README.md:
+ * Only bcrypt HASHES are stored, never the passwords themselves. The
+ * passwords are listed in README.md ("Sign-in accounts"):
  *   admin / admin123, analyst / analyst123, viewer / viewer123
  */
 const USERS = [

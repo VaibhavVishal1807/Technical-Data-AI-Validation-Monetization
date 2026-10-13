@@ -9,6 +9,7 @@ const config = require('./config');
 const { createState } = require('./state');
 const { createApp } = require('./app');
 const { attachAlertSocket, WS_PATH } = require('./ws');
+const { USERS } = require('./users');
 
 function start() {
   const state = createState(config);
@@ -36,6 +37,11 @@ function start() {
     }
     if (config.jwtSecretGenerated) {
       console.log('[api] note: JWT_SECRET not set, using a random secret (logins reset when the server restarts)');
+    }
+    // Outside production, point whoever started the server to the built-in accounts.
+    // Only usernames are printed; the passwords are in README.md ("Sign-in accounts").
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[auth] built-in accounts: ${USERS.map((u) => `${u.username} (${u.role})`).join(', ')}; passwords in README.md, "Sign-in accounts"`);
     }
   });
 

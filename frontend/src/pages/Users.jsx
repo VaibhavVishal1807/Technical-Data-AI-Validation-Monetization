@@ -24,7 +24,7 @@ export default function Users() {
   const users = useApi('/users');
   return (
     <>
-      <PageHead title="Users and roles" subtitle="Demo accounts. Permissions are enforced by the API on every request; the menu only hides what a role cannot open." />
+      <PageHead title="Users and roles" subtitle="Accounts and what each role may do. Permissions are enforced by the API on every request; the menu only hides what a role cannot open." />
       <PageState {...users} skeleton={<TableSkeleton rows={3} />}>
         {users.data && (
           <Section flush>

@@ -33,14 +33,14 @@ npm run install:all
 npm run dev
 ```
 
-Then open **http://localhost:5173** and sign in with one of the demo accounts below.
+Then open **http://localhost:5173** and sign in with one of the accounts below.
 
 - `npm run install:all` installs the root tool (`concurrently`), the backend and the frontend.
 - `npm run dev` starts the API on port 4000 and the React app on port 5173 together. Press Ctrl+C to stop both.
 - No `.env` is needed. Every setting has a default (see [Configuration](#configuration)).
 - Single-server mode: `npm start` builds the React app and serves everything from **http://127.0.0.1:4000**.
 
-### Demo logins
+### Sign-in accounts
 
 | Username | Password | Role | Can see |
 |---|---|---|---|
@@ -48,8 +48,10 @@ Then open **http://localhost:5173** and sign in with one of the demo accounts be
 | `analyst` | `analyst123` | analyst | Overview, Live Alerts, Reports, Orphaned, Costs, Data Quality (read-only) |
 | `viewer` | `viewer123` | viewer | Overview (no cost figures), Live Alerts, Data Quality |
 
-The login page has buttons that fill these in. Passwords are stored only as bcrypt hashes
-(`backend/src/users.js`). Hard-coded demo users are fine for a case study; production would use SSO.
+The login page does not list these accounts; they are documented here, and in development the API
+prints the usernames when it starts. Passwords are stored only as bcrypt hashes (`backend/src/users.js`).
+Built-in accounts suit an evaluation; production would sign people in through the company's identity
+provider (SSO).
 
 ### Things to try
 1. Sign in as **admin**. Alerts start streaming at once (the telemetry replay plays the CSV as live data); CRITICAL ones pop up.
@@ -254,7 +256,7 @@ Details and counts are in [docs/DATA_QUALITY.md](docs/DATA_QUALITY.md).
     Findings show the method working, not real business conclusions.
 
 ### Security and access
-14. **Demo users are hard-coded** (`admin`, `analyst`, `viewer`) with bcrypt-hashed passwords, which is fine for a
+14. **The three accounts are built in** (`admin`, `analyst`, `viewer`) with bcrypt-hashed passwords, which is fine for a
     case study. Production would use the company identity provider (SSO/OIDC).
 15. **`bcryptjs` instead of `bcrypt`**: same algorithm, pure JavaScript, so `npm install` never needs a C++ build
     toolchain on Windows.

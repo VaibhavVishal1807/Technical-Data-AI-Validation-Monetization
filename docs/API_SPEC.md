@@ -65,7 +65,7 @@ Access is checked **on the server** for every route. The UI hides pages as a con
 | `replay:control` | ✅ | ❌ | ❌ | `POST /api/replay/start`, `/pause`, `/reset` |
 | `users:read` | ✅ | ❌ | ❌ | `GET /api/users` |
 
-Demo users: `admin / admin123`, `analyst / analyst123`, `viewer / viewer123`.
+Built-in accounts: `admin / admin123`, `analyst / analyst123`, `viewer / viewer123`.
 
 ---
 
