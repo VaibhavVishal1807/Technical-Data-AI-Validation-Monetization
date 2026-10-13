@@ -1,0 +1,323 @@
+/*
+ * Theme for the whole app (Tailwind v4 + shadcn/ui).
+ * Tailwind generates utility classes (p-4, text-sm ...) from the tokens in
+ * @theme; shadcn components read the CSS variables in :root. The app is
+ * dark-only, so there is a single palette and <html class="dark">.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Static tokens: fonts and the type scale (14px body text at line-height 1.5). */
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --text-sm--line-height: 1.5;
+  --text-xs--line-height: 1.5;
+}
+
+/* Map the CSS variables below to Tailwind colour names (bg-card, text-critical ...). */
+@theme inline {
+  --font-heading: var(--font-sans);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  /* App-specific colours */
+  --color-subtle: var(--text-muted);
+  --color-link: var(--accent-text);
+  --color-critical: var(--status-critical);
+  --color-warning: var(--status-warning);
+  --color-ok: var(--status-ok);
+  --color-unknown: var(--status-unknown);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: flat page, solid cards (no transparency, no blur) */
+  --background: #05070d;
+  --card: #0f1117;
+  --popover: #0f1117;
+  --border: #1f2430;
+  --input: #1f2430;
+  /* Neutral hover / skeleton / secondary-button fill */
+  --muted: #1f2430;
+  --secondary: #1f2430;
+  --accent: #1f2430; /* shadcn's name for the hover highlight, NOT the brand accent */
+
+  /* Text */
+  --foreground: #f4f4f5; /* primary */
+  --card-foreground: #f4f4f5;
+  --popover-foreground: #f4f4f5;
+  --secondary-foreground: #f4f4f5;
+  --accent-foreground: #f4f4f5;
+  --muted-foreground: #9ca3af; /* secondary */
+  --text-muted: #6b7280; /* muted: placeholders and non-essential captions only */
+
+  /* Brand accent: active nav item, links, primary buttons and focus rings only */
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --ring: #2563eb;
+  /* #2563eb is 3.7:1 as text on these surfaces; this 20% lighter tint is 5.2:1 (WCAG AA). */
+  --accent-text: #5182ef;
+
+  /* Status (shown as soft badges: 12% tinted background + coloured text) */
+  --status-critical: #ef4444;
+  --status-warning: #f59e0b;
+  --status-ok: #22c55e;
+  --status-unknown: #9ca3af;
+  --destructive: #ef4444;
+
+  /* Chart series: kept away from the accent blue and the status colours. */
+  --chart-1: #a855f7;
+  --chart-2: #0ea5b7;
+
+  --radius: 0.5rem; /* 8px */
+
+  /* The one static glow, top-right. "fixed" pins it to the viewport, so the
+     sticky top bar can paint the same background and the glow stays seamless. */
+  --app-glow: radial-gradient(560px circle at 100% 0%, rgb(37 99 235 / 0.18), transparent 70%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    background: var(--app-glow) fixed, var(--background);
+    color: var(--foreground);
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 400;
+    /* Every number lines up in columns. */
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  code {
+    @apply font-mono text-xs;
+  }
+}
+
+@layer components {
+  /* 12px / 500 / uppercase / 0.04em: labels, table headers, captions. */
+  .text-label {
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted-foreground);
+  }
+
+  /* Native <select>, styled to match shadcn's Input. */
+  .select-native {
+    @apply h-8 rounded-lg border border-input bg-input/30 px-2 text-sm text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .select-native option {
+    background: var(--card);
+    color: var(--foreground);
+  }
+
+  /* SVG charts (components/Charts.jsx) */
+  .chart text {
+    fill: var(--muted-foreground);
+    font-size: 12px;
+    font-family: var(--font-sans);
+  }
+  .chart .grid-line {
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+  .chart .baseline {
+    stroke: var(--text-muted);
+    stroke-width: 1;
+  }
+  .chart .crosshair {
+    stroke: var(--muted-foreground);
+    stroke-width: 1;
+  }
+}
+
+/* ---------- Floating dock (vertical navigation, components/FloatingDock.jsx) ----------
+   The dock keeps its original glass look: a blue-tinted frosted pill with a
+   1px hairline edge; the current page is a blue circle with a soft glow and a
+   small dot on its left, like a running app in a macOS dock. */
+:root {
+  --dock-tint: linear-gradient(140deg, rgba(147, 197, 253, 0.12) 0%, rgba(96, 165, 250, 0.05) 45%, rgba(59, 130, 246, 0.035) 100%);
+  --dock-hairline: linear-gradient(150deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.09) 28%, rgba(255, 255, 255, 0.04) 62%, rgba(147, 197, 253, 0.18) 100%);
+  --dock-glass: blur(14px) saturate(140%);
+  --dock-active: #60a5fa;
+}
+
+/* A slim rail on the left holds the logo and the dock (no panel behind it). */
+.rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 20; /* above the page, so dock labels can overlap it */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+}
+.rail-brand { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; }
+.rail-brand img { width: 34px; height: 34px; filter: drop-shadow(0 0 14px rgba(4, 120, 249, 0.35)); transition: transform 0.2s; }
+.rail-brand:hover img { transform: scale(1.06); }
+.rail-brand:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+.dock {
+  margin: auto 0; /* vertically centred in the rail */
+  width: 78px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-radius: 26px;
+  background: var(--dock-tint), rgba(8, 12, 24, 0.5);
+  backdrop-filter: var(--dock-glass);
+  -webkit-backdrop-filter: var(--dock-glass);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  position: relative;
+}
+/* 1px hairline edge, brightest at the top-left. */
+.dock::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--dock-hairline);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+.dock-link { position: relative; display: block; border-radius: 999px; color: var(--muted-foreground); }
+.dock-link:hover { color: var(--foreground); }
+.dock-link:focus-visible { outline: none; }
+.dock-link:focus-visible .dock-item { box-shadow: 0 0 0 2px var(--ring); }
+.dock-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.15s, border-color 0.15s;
+}
+.dock-link:hover .dock-item { background: rgba(255, 255, 255, 0.11); border-color: rgba(147, 197, 253, 0.28); }
+.dock-icon { display: flex; align-items: center; justify-content: center; }
+.dock-link.active { color: var(--dock-active); }
+.dock-link.active .dock-item {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 18px rgba(4, 120, 249, 0.35);
+}
+.dock-link.active::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--dock-active);
+  box-shadow: 0 0 8px #3b82f6;
+}
+/* Page name shown to the right of the hovered (or focused) icon. */
+.dock-label {
+  position: absolute;
+  left: calc(100% + 16px);
+  top: 50%;
+  white-space: nowrap;
+  pointer-events: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground);
+  background: var(--popover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 8px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+/* Phones and small tablets: a floating tab bar at the bottom instead of the dock. */
+.mobile-dock {
+  display: none;
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 30;
+  justify-content: space-around;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 20px;
+  background: var(--dock-tint), rgba(8, 12, 24, 0.72);
+  backdrop-filter: var(--dock-glass);
+  -webkit-backdrop-filter: var(--dock-glass);
+  border: 1px solid rgba(147, 197, 253, 0.16);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+.mobile-dock-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 2px;
+  border-radius: 14px;
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.mobile-dock-link:hover { color: var(--foreground); }
+.mobile-dock-link span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mobile-dock-link.active { color: var(--dock-active); background: rgba(59, 130, 246, 0.18); }
+
+@media (max-width: 899px) {
+  .rail { display: none; }
+  .mobile-dock { display: flex; }
+  /* Keep pop-ups above the tab bar. */
+  [data-sonner-toaster][data-y-position="bottom"] {
+    --offset-bottom: 96px !important;
+    --mobile-offset-bottom: 96px !important;
+  }
+}
