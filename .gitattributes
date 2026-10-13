@@ -1,0 +1,4 @@
+# Keep line endings consistent (LF) for everyone, whatever their OS.
+* text=auto eol=lf
+*.png binary
+*.jpg binary

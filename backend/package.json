@@ -1,0 +1,36 @@
+{
+  "name": "pure-insights-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node.js/Express API, RBAC and WebSocket alerting for the Pure Insights Command Center",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest",
+    "dq": "node scripts/dataQualitySummary.js",
+    "sql": "node scripts/runSql.js"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 20000
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "csv-parse": "^7.0.3",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "supertest": "^7.3.1"
+  },
+  "optionalDependencies": {
+    "@duckdb/node-api": "^1.5.6-r.1"
+  }
+}

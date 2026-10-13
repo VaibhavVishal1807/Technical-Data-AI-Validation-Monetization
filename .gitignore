@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+coverage/
+
+# Secrets and local settings (copy .env.example to .env instead)
+.env
+.env.local
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# Personal notes, kept locally only
+docs/LEARNING_NOTES.md

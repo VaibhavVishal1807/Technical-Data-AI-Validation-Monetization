@@ -1,0 +1,19 @@
+{
+  "name": "pure-insights-command-center",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Operational admin dashboard with RBAC, real-time WebSocket alerts and Snowflake cost attribution (Pure Storage case study 3)",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors blue,magenta \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "test": "npm test --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "start": "npm run build && npm start --prefix backend"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}
